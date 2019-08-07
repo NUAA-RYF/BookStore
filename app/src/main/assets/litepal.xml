@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="BookStore"/>
+    <version value="13"/>
+
+    <list>
+        <mapping class="com.thundersoft.bookstore.model.Book"/>
+        <mapping class="com.thundersoft.bookstore.model.BookCategory"/>
+        <mapping class="com.thundersoft.bookstore.model.Manager"/>
+        <mapping class="com.thundersoft.bookstore.model.Management"/>
+    </list>
+</litepal>

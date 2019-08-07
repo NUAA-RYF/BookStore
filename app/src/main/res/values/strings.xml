@@ -1,0 +1,24 @@
+<resources>
+    <!--App清单-->
+    <string name="app_name">BookStore</string>
+
+    <!--登录页面-->
+    <string name="login_signIn">登录</string>
+    <string name="login_signUp">注册</string>
+    <string name="login_hint_account">请输入账号</string>
+    <string name="login_hint_password">请输入密码</string>
+    <string name="login_forget">忘记密码?</string>
+    <string name="login_remember">记住密码</string>
+
+    <!--注册页面-->
+    <string name="register_submit">提交</string>
+    <string name="register_back">返回</string>
+    <string name="register_email">请输入电子邮箱</string>
+
+    <!--个人中心-->
+    <string name="personal_change_btn">修改个人信息</string>
+
+    <!--修改个人信息页面-->
+    <string name="changeInfo_submit">提交</string>
+</resources>
+
