@@ -1,47 +1,42 @@
 package com.thundersoft.bookstore.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.allen.library.SuperTextView;
-import com.google.gson.Gson;
 import com.thundersoft.bookstore.Dao.ManagerDAO;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.activity.PersonalActivity;
-import com.thundersoft.bookstore.model.Book;
 import com.thundersoft.bookstore.model.Manager;
-import com.thundersoft.bookstore.util.HttpUtil;
-import com.thundersoft.bookstore.util.Util;
-import org.jetbrains.annotations.NotNull;
-import org.litepal.crud.DataSupport;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import jp.wasabeef.blurry.Blurry;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ManagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManagerFragment extends Fragment {
+public class ManagerFragment extends Fragment implements View.OnClickListener{
 
     private static final String TAG = "ManagerFragment";
     private static final String MANAGER_TITLE = "title";
@@ -70,6 +65,11 @@ public class ManagerFragment extends Fragment {
     private Context mContext;
     private Unbinder mBinder;
     private Intent mIntent;
+
+    @SuppressLint("SdCardPath")
+    private static String path = "/sdcard/myHead";
+
+    private Bitmap head;
     public ManagerFragment() {
         // Required empty public constructor
     }
@@ -100,16 +100,18 @@ public class ManagerFragment extends Fragment {
         mContext = getContext();
         mBinder = ButterKnife.bind(this,convertView);
         initData();
-
+        initClickListener();
 
         return convertView;
+    }
+
+    private void initClickListener(){
+        mImage.setOnClickListener(this);
     }
 
     private void initData() {
 
         mContext = getContext();
-
-        //高斯模糊头像并设置为背景
         Bitmap bmp = ((BitmapDrawable) getResources().getDrawable(R.mipmap.icon_head)).getBitmap();
         Blurry.with(getContext())
                 .radius(25)
@@ -117,6 +119,30 @@ public class ManagerFragment extends Fragment {
                 .async()
                 .from(bmp)
                 .into(mImage);
+        //高斯模糊头像并设置为背景
+        //Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+        /*if (bitmap != null){
+            //头像不为空,设置高斯模糊
+            Blurry.with(getContext())
+                    .radius(25)
+                    .sampling(2)
+                    .async()
+                    .from(bitmap)
+                    .into(mImage);
+        }else {
+            //头像为空,设置为默认头像并设置高斯模糊
+            Bitmap bmp = ((BitmapDrawable) getResources().getDrawable(R.mipmap.icon_head)).getBitmap();
+            Blurry.with(getContext())
+                    .radius(25)
+                    .sampling(2)
+                    .async()
+                    .from(bmp)
+                    .into(mImage);
+        }*/
+
+
+
 
         //携带管理员信息参数
         mIntent = getActivity().getIntent();
@@ -129,6 +155,110 @@ public class ManagerFragment extends Fragment {
         mPersonal.setOnSuperTextViewClickListener(superTextView -> {
             mContext.startActivity(mIntent);
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.manager_Image:
+                Intent intent = new Intent(Intent.ACTION_PICK,null);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+                startActivityForResult(intent,1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode){
+            case 1:
+                if (resultCode == RESULT_OK){
+                    //剪裁图片
+                    cropPhoto(data.getData());
+                }
+                break;
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    File temp = new File(Environment.getExternalStorageDirectory()
+                            + "/head.jpg");
+                    cropPhoto(Uri.fromFile(temp));// 裁剪图片
+                }
+                break;
+            case 3:
+                if (data != null) {
+                    Bundle extras = data.getExtras();
+                    head = extras.getParcelable("data");
+                    if (head != null) {
+                        //此处可以上传服务器或者将路径保存至用户数据库
+                        setPicToView(head);// 保存在SD卡中
+
+                        if (head != null && head.isRecycled()) {
+                            head.recycle();
+                        }
+
+                    }
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //将图片
+    private void setPicToView(Bitmap mBitmap) {
+        String sdStatus = Environment.getExternalStorageState();
+        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
+            return;
+        }
+        FileOutputStream b = null;
+        File file = new File(path);
+        file.mkdirs();// 创建文件夹
+        String fileName = path + "head.jpg";// 图片名字
+        try {
+            b = new FileOutputStream(fileName);
+            mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // 关闭流
+                b.flush();
+                b.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    //利用系统裁剪图片
+    private void cropPhoto(Uri uri){
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 150);
+        intent.putExtra("outputY", 150);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, 3);
+    }
+
+    //通过路径打开图片
+    private Bitmap getBitmap(String pathString) {
+        Bitmap bitmap = null;
+        try {
+            File file = new File(pathString);
+            if (file.exists()) {
+                bitmap = BitmapFactory.decodeFile(pathString);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 
     @Override
