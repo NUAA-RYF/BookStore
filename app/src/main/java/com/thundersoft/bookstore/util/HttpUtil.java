@@ -16,7 +16,6 @@ public class HttpUtil {
                 client.newCall(request).enqueue(callback);
             }catch (Exception e){
                 e.printStackTrace();
-                Log.i(TAG, "run: Http异常!");
             }
         }).start();
     }
