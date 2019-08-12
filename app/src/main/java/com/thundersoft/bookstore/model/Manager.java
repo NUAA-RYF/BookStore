@@ -5,7 +5,8 @@ import org.litepal.crud.DataSupport;
 public class Manager extends DataSupport {
 
     private int id;
-    private int managerImage;
+
+    private String managerImagePath;
     private String managerName;
     private String managerIntroduce;
     private String managerAccount;
@@ -56,12 +57,12 @@ public class Manager extends DataSupport {
         this.managerPassword = managerPassword;
     }
 
-    public int getManagerImage() {
-        return managerImage;
+    public String getManagerImagePath() {
+        return managerImagePath;
     }
 
-    public void setManagerImage(int managerImage) {
-        this.managerImage = managerImage;
+    public void setManagerImagePath(String managerImagePath) {
+        this.managerImagePath = managerImagePath;
     }
 
     public String getManagerName() {

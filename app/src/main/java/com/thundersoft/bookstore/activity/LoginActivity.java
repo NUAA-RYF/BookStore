@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -65,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean isRemember;
 
+    private Manager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (flag) {
                     result = ERROR_NOT_NULL;
                 } else {
-                    Manager manager = new Manager();
+                    manager = new Manager();
                     manager.setManagerName(account);
                     manager.setManagerPassword(password);
                     //传递登录用户信息
@@ -143,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.login_signUp:
                 Intent intent = new Intent(this, RegisterActivity.class);
-                getBaseContext().startActivity(intent);
+                this.startActivity(intent);
                 break;
             case R.id.login_forget:
                 break;
@@ -171,13 +174,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
             builder.show();
         } else {
-            builder.setMessage(message)
-                    .setTitle("登录信息:")
-                    .setNegativeButton("确定", (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                        getBaseContext().startActivity(mIntent);
-                    })
-                    .show();
+            this.startActivity(mIntent);
+            Toast.makeText(this, manager.getManagerName()+",欢迎登录!", Toast.LENGTH_SHORT).show();
         }
     }
 

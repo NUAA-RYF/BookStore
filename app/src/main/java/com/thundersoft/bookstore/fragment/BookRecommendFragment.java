@@ -3,6 +3,7 @@ package com.thundersoft.bookstore.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.adapter.BookAdapter;
 import com.thundersoft.bookstore.model.Book;
 import com.thundersoft.bookstore.model.BookCategory;
+import com.thundersoft.bookstore.model.Management;
 import com.thundersoft.bookstore.util.Util;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -97,25 +99,74 @@ public class BookRecommendFragment extends Fragment {
 
     //从数据库中查询
     private void queryBookFromDatabase() {
+        Management mManagement = DataSupport.find(Management.class,1);
+
+        if (mManagement == null){
+            Management management = new Management();
+            management.setBannerManagement("0 0 0 0 0");
+            management.setBookRecommendId("0 0 0 0 0 0 0 0 0 0");
+            management.save();
+            mManagement = DataSupport.find(Management.class,1);
+        }
+        if (mManagement.getBannerManagement() == null){
+            mManagement.setBannerManagement("0 0 0 0 0");
+            mManagement.update(mManagement.getId());
+            mManagement = DataSupport.find(Management.class,1);
+        }
+        if (mManagement.getBookRecommendId() == null){
+            mManagement.setBookRecommendId("0 0 0 0 0 0 0 0 0 0");
+            mManagement.update(mManagement.getId());
+            mManagement = DataSupport.find(Management.class,1);
+        }
+
         //mBookList应为管理员设置推荐书籍
-        List<Book> mBookList = DataSupport.limit(10).find(Book.class);
+        List<Book> mBookList = new ArrayList<>();
+        String[] recommend_bookId = mManagement.getBookRecommendId().split(" ");
+        if (recommendIsAvailable(recommend_bookId)){
+            for (int i = 0; i < recommend_bookId.length; i++) {
+                if (!recommend_bookId[i].equals("0")){
+                    Book book = DataSupport.find(Book.class,Integer.parseInt(recommend_bookId[i]));
+                    mBookList.add(book);
+                }
+            }
+        }else {
+            mBookList = DataSupport.limit(10).find(Book.class);
+        }
+
         //urls轮播图应为管理员设置推荐书籍,应为url地址或者图片id
         List<String> urls = new ArrayList<>();
+        String[] banner_bookId = mManagement.getBannerManagement().split(" ");
+        if (bannerIsAvailable(banner_bookId)){
+            for (int i = 0; i < banner_bookId.length; i++) {
+                if (!banner_bookId[i].equals("0")){
+                    int tempId = Integer.parseInt(banner_bookId[i]);
+                    Book book = DataSupport.find(Book.class,tempId);
+                    urls.add(book.getImageurl());
+                }
+            }
+        }else {
+            for (int i = 0; i < mBookList.size(); i++) {
+                urls.add(mBookList.get(i).getImageurl());
+            }
+        }
+
+        //轮播图属性设置
+        mBanner.setImages(urls)
+                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setDelayTime(1500)
+                .setImageLoader(new GlideImageLoader())
+                .isAutoPlay(true)
+                .setIndicatorGravity(BannerConfig.RIGHT)
+                .setBannerAnimation(Transformer.Default)
+                .start();
 
         if (mBookList.size() > 0) {
             //显示视图
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < mBookList.size(); i++) {
                 urls.add(mBookList.get(i).getImageurl());
             }
 
-            mBanner.setImages(urls)
-                    .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                    .setDelayTime(1500)
-                    .setImageLoader(new GlideImageLoader())
-                    .isAutoPlay(true)
-                    .setIndicatorGravity(BannerConfig.RIGHT)
-                    .setBannerAnimation(Transformer.Default)
-                    .start();
+
 
             GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
             BookAdapter bookAdapter = new BookAdapter(mBookList);
@@ -133,7 +184,6 @@ public class BookRecommendFragment extends Fragment {
             }else {
                 Util.downloadCategoryFromServer();
             }
-            Toast.makeText(mContext, "请等待管理员添加信息!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -207,5 +257,23 @@ public class BookRecommendFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    private boolean bannerIsAvailable(String[] id){
+        int length = id.length;
+        for (int i = 0; i < length; i++) {
+            if (!id[i].equals("0")){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    private boolean recommendIsAvailable(String[] id){
+        int length = id.length;
+        for (int i = 0; i < length; i++) {
+            if (!id[i].equals("0")){
+                return true;
+            }
+        }
+        return false;
+    }
 }

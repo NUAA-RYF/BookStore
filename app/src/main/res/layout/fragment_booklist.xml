@@ -28,7 +28,7 @@
     <ListView
         android:id="@+id/book_list_listView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:divider="@color/bootstrap_gray_light"
         android:dividerHeight="1sp"
         android:footerDividersEnabled="true"
@@ -36,6 +36,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bookList_head"
         app:layout_constraintLeft_toRightOf="@id/bookCategory_list_listView"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 

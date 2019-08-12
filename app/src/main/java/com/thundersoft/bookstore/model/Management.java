@@ -4,24 +4,30 @@ import org.litepal.crud.DataSupport;
 
 public class Management extends DataSupport {
 
-    //推荐书籍管理
-    private int bookManagementId[];
-    //轮播图管理
-    private String bannerManagement[];
+    private int id;
 
-    public int[] getBookManagementId() {
-        return bookManagementId;
+    private String bannerManagement;
+
+    private String bookRecommendId;
+
+    public int getId() {
+        return id;
     }
 
-    public void setBookManagementId(int[] bookManagementId) {
-        this.bookManagementId = bookManagementId;
+    public String getBookRecommendId() {
+        return bookRecommendId;
     }
 
-    public String[] getBannerManagement() {
+    public void setBookRecommendId(String bookRecommendId) {
+        this.bookRecommendId = bookRecommendId;
+    }
+
+    public String getBannerManagement() {
         return bannerManagement;
     }
 
-    public void setBannerManagement(String[] bannerManagement) {
+    public void setBannerManagement(String bannerManagement) {
         this.bannerManagement = bannerManagement;
     }
+
 }

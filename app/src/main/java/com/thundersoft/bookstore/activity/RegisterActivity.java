@@ -80,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (result) {
                     //判断账户是否存在,若存在则对话框报错提示,反之注册
                     accountIsExisted(account, builder, password,email);
-                } else {
+                }else {
                     break;
                 }
                 break;

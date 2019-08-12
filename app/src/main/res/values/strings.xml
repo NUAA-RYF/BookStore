@@ -15,10 +15,22 @@
     <string name="register_back">返回</string>
     <string name="register_email">请输入电子邮箱</string>
 
+    <!--管理页面-->
+    <string name="management_book">书籍管理</string>
+    <string name="management_personal">个人中心</string>
+    <string name="management_bookAdd">添加书籍</string>
+    <string name="management_bookListAdd">添加书籍列表</string>
+    <string name="management_bookLend">借书申请管理</string>
+
     <!--个人中心-->
     <string name="personal_change_btn">修改个人信息</string>
 
     <!--修改个人信息页面-->
     <string name="changeInfo_submit">提交</string>
+
+    <!--轮播图管理页面-->
+    <string name="banner_isSelected">轮播</string>
+    <string name="banner_isRecommend">推荐</string>
+
 </resources>
 

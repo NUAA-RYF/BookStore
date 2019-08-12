@@ -3,28 +3,26 @@ package com.thundersoft.bookstore.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.allen.library.SuperButton;
-import com.google.gson.Gson;
 import com.thundersoft.bookstore.Dao.ManagerDAO;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.model.Manager;
-
-import org.litepal.crud.DataSupport;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ChangeInfoActivity extends AppCompatActivity implements View.OnClickListener{
+public class ChangeInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "ChangeInfoActivity";
 
@@ -36,19 +34,17 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
     EditText mInfo;
     @BindView(R.id.changInfo_submit)
     SuperButton mSubmit;
+    @BindView(R.id.changeInfo_toolbar)
+    Toolbar mToolbar;
 
     private Unbinder mBinder;
-
     private Intent mIntent;
-
     private Manager manager;
-
     private String name;
-
     private String email;
-
     private String info;
 
+    private ActionBar mBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +54,15 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
         initClickListener();
     }
 
-    private void initClickListener(){
+    private void initClickListener() {
         mSubmit.setOnClickListener(this);
     }
-    private void initData(){
+
+    private void initData() {
         mIntent = getIntent();
-        mIntent.setClass(this,PersonalActivity.class);
+        mIntent.setClass(this, PersonalActivity.class);
         //从数据库获取管理员数据
-        int managerId = mIntent.getIntExtra("managerId",-1);
+        int managerId = mIntent.getIntExtra("managerId", -1);
         manager = ManagerDAO.getManagerById(managerId);
         //
         name = manager.getManagerName();
@@ -75,17 +72,23 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
         mEmail.setText(email);
         mInfo.setText(info);
 
+        setSupportActionBar(mToolbar);
+        mBar = getSupportActionBar();
+        if (mBar != null) {
+            mBar.setDisplayHomeAsUpEnabled(true);
+            mBar.setTitle("修改个人信息");
+        }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.changInfo_submit:
                 name = String.valueOf(mName.getText());
                 email = String.valueOf(mEmail.getText());
                 info = String.valueOf(mInfo.getText());
-                boolean result = isAvailable(name,email,info);
-                if (result){
+                boolean result = isAvailable(name, email, info);
+                if (result) {
                     manager.setManagerName(name);
                     manager.setManagerEmail(email);
                     manager.setManagerIntroduce(info);
@@ -102,8 +105,8 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    private boolean isAvailable(String name,String email,String info){
-        if (TextUtils.isEmpty(name)|TextUtils.isEmpty(email)|TextUtils.isEmpty(info)){
+    private boolean isAvailable(String name, String email, String info) {
+        if (TextUtils.isEmpty(name) | TextUtils.isEmpty(email) | TextUtils.isEmpty(info)) {
             Toast.makeText(this, "信息不能为空!", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -115,5 +118,15 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
     protected void onDestroy() {
         super.onDestroy();
         mBinder.unbind();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

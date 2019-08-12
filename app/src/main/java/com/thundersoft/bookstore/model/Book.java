@@ -16,13 +16,16 @@ public class Book extends DataSupport {
 
     private String bookRentTime;
 
+    private int isBanner;
+
+    private int isRecommend;
 
     private int isVisible;
     //借阅状态,0未被借阅,1申请借阅,2正在被借阅
     private int onState;
 
 
-    private int bookId;
+    private int id;
     private int imageId;
 
     public Book(String bookName, String bookCatalog, String bookTag,
@@ -42,8 +45,25 @@ public class Book extends DataSupport {
         this.isVisible = isVisible;
         this.onState = onState;
     }
+
+    public int getIsRecommend() {
+        return isRecommend;
+    }
+
+    public void setIsRecommend(int isRecommend) {
+        this.isRecommend = isRecommend;
+    }
+
+    public int getIsBanner() {
+        return isBanner;
+    }
+
+    public void setIsBanner(int isBanner) {
+        this.isBanner = isBanner;
+    }
+
     public int getId() {
-        return bookId;
+        return id;
     }
 
     public String getBookRentTime() {

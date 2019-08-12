@@ -40,7 +40,8 @@
             app:sDividerLineColor="@color/colorSilver"
             app:sDividerLineHeight="1dp"
             app:sDividerLineType="both"
-            app:sLeftTextString="个人中心"
+            app:sLeftTextString="@string/management_personal"
+            app:sLeftTvDrawableLeft="@mipmap/icon_personal"
             app:sRightIconRes="@mipmap/icon_forward"
             />
 
@@ -52,8 +53,10 @@
             app:sDividerLineColor="@color/colorSilver"
             app:sDividerLineHeight="1dp"
             app:sDividerLineType="bottom"
-            app:sLeftTextString="借书申请管理"
-            app:sRightIconRes="@mipmap/icon_forward" />
+            app:sLeftTextString="@string/management_bookLend"
+            app:sRightIconRes="@mipmap/icon_forward"
+            app:sLeftTvDrawableLeft="@mipmap/icon_booklend"
+            />
 
         <com.allen.library.SuperTextView
             android:id="@+id/manager_item_addBookCategory"
@@ -64,8 +67,9 @@
             app:sDividerLineColor="@color/colorSilver"
             app:sDividerLineHeight="1dp"
             app:sDividerLineType="both"
-            app:sLeftTextString="添加书籍列表"
-            app:sRightIconRes="@mipmap/icon_forward" />
+            app:sLeftTextString="@string/management_bookListAdd"
+            app:sRightIconRes="@mipmap/icon_forward"
+            app:sLeftTvDrawableLeft="@mipmap/icon_book_add"/>
         <com.allen.library.SuperTextView
             android:id="@+id/manager_item_addBook"
             android:layout_width="match_parent"
@@ -74,8 +78,9 @@
             app:sDividerLineColor="@color/colorSilver"
             app:sDividerLineHeight="1dp"
             app:sDividerLineType="bottom"
-            app:sLeftTextString="添加书籍"
-            app:sRightIconRes="@mipmap/icon_forward" />
+            app:sLeftTextString="@string/management_bookAdd"
+            app:sRightIconRes="@mipmap/icon_forward"
+            app:sLeftTvDrawableLeft="@mipmap/icon_book_add"/>
 
         <com.allen.library.SuperTextView
             android:id="@+id/manager_item_banner"
@@ -86,40 +91,10 @@
             app:sDividerLineColor="@color/colorSilver"
             app:sDividerLineHeight="1dp"
             app:sDividerLineType="both"
-            app:sLeftTextString="轮播图管理"
-            app:sRightIconRes="@mipmap/icon_forward" />
-
-        <com.allen.library.SuperTextView
-            android:id="@+id/manager_item_bookList"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            app:layout_constraintTop_toBottomOf="@id/manager_item_banner"
-            app:sDividerLineColor="@color/colorSilver"
-            app:sDividerLineType="none"
-            app:sLeftTextString="书籍列表显示"
-            app:sRightIconRes="@mipmap/icon_forward" />
-
-        <com.allen.library.SuperTextView
-            android:id="@+id/manager_item_bookRecommend"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            app:layout_constraintTop_toBottomOf="@id/manager_item_bookList"
-            app:sDividerLineColor="@color/colorSilver"
-            app:sDividerLineHeight="1dp"
-            app:sDividerLineType="top"
-            app:sLeftTextString="推荐书籍显示"
-            app:sRightIconRes="@mipmap/icon_forward" />
-
-        <com.allen.library.SuperTextView
-            android:id="@+id/manager_item_book"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            app:layout_constraintTop_toBottomOf="@id/manager_item_bookRecommend"
-            app:sDividerLineColor="@color/colorSilver"
-            app:sDividerLineHeight="1dp"
-            app:sDividerLineType="both"
-            app:sLeftTextString="书籍显示"
-            app:sRightIconRes="@mipmap/icon_forward" />
+            app:sLeftTextString="@string/management_book"
+            app:sRightIconRes="@mipmap/icon_forward"
+            app:sLeftTvDrawableLeft="@mipmap/icon_book_management"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
 

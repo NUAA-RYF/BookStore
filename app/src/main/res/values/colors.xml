@@ -11,9 +11,9 @@
     <color name="background_unselected">#fff</color>
     <color name="background_selected">#3498db</color>
     --------------------------------------------------------
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#bdc3c7</color>
-    <color name="colorAccent">#D94E8A</color>
+    <color name="colorPrimary">#3498db</color>
+    <color name="colorPrimaryDark">#3498db</color>
+    <color name="colorAccent">#00BFFF</color>
     <color name="searkBarColor">#cf5a2d</color>
     <color name="light_blue">#00acff</color>
     <color name="white">#ffffff</color>

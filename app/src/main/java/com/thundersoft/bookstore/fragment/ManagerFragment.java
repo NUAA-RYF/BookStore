@@ -17,10 +17,9 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.allen.library.SuperTextView;
-import com.thundersoft.bookstore.Dao.ManagerDAO;
 import com.thundersoft.bookstore.R;
+import com.thundersoft.bookstore.activity.BannerManagementActivity;
 import com.thundersoft.bookstore.activity.PersonalActivity;
-import com.thundersoft.bookstore.model.Manager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -29,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import jp.wasabeef.blurry.Blurry;
+
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -51,14 +51,9 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     SuperTextView mAddCategory;
     @BindView(R.id.manager_item_addBook)
     SuperTextView mAddBook;
-    @BindView(R.id.manager_item_bookRecommend)
-    SuperTextView mRecommend;
-    @BindView(R.id.manager_item_book)
-    SuperTextView mBook;
     @BindView(R.id.manager_item_banner)
     SuperTextView mBanner;
-    @BindView(R.id.manager_item_bookList)
-    SuperTextView mBookList;
+
 
     private String title;
     private View convertView;
@@ -107,10 +102,11 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
 
     private void initClickListener(){
         mImage.setOnClickListener(this);
+        mBanner.setOnClickListener(this);
+        mPersonal.setOnClickListener(this);
     }
 
     private void initData() {
-
         mContext = getContext();
         Bitmap bmp = ((BitmapDrawable) getResources().getDrawable(R.mipmap.icon_head)).getBitmap();
         Blurry.with(getContext())
@@ -140,21 +136,6 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
                     .from(bmp)
                     .into(mImage);
         }*/
-
-
-
-
-        //携带管理员信息参数
-        mIntent = getActivity().getIntent();
-        int managerId = mIntent.getIntExtra("managerId",-1);
-
-        Manager manager = ManagerDAO.getManagerById(managerId);
-
-
-        mIntent.setClass(mContext, PersonalActivity.class);
-        mPersonal.setOnSuperTextViewClickListener(superTextView -> {
-            mContext.startActivity(mIntent);
-        });
     }
 
     @Override
@@ -165,6 +146,17 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
                 startActivityForResult(intent,1);
                 break;
+            case R.id.manager_item_banner:
+                Intent manager_banner = new Intent(mContext, BannerManagementActivity.class);
+                startActivity(manager_banner);
+                break;
+            case R.id.manager_item_personal:
+                mIntent = getActivity().getIntent();
+                mIntent.setClass(mContext, PersonalActivity.class);
+                startActivity(mIntent);
+                break;
+                /*int managerId = mIntent.getIntExtra("managerId",-1);
+                Manager manager = ManagerDAO.getManagerById(managerId);*/
             default:
                 break;
         }
@@ -197,7 +189,6 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
                         if (head != null && head.isRecycled()) {
                             head.recycle();
                         }
-
                     }
                 }
                 break;
