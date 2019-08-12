@@ -20,10 +20,15 @@ import com.allen.library.SuperTextView;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.activity.BannerManagementActivity;
 import com.thundersoft.bookstore.activity.PersonalActivity;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -38,7 +43,6 @@ import static android.app.Activity.RESULT_OK;
  */
 public class ManagerFragment extends Fragment implements View.OnClickListener{
 
-    private static final String TAG = "ManagerFragment";
     private static final String MANAGER_TITLE = "title";
 
     @BindView(R.id.manager_Image)
@@ -55,16 +59,13 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     SuperTextView mBanner;
 
 
-    private String title;
     private View convertView;
     private Context mContext;
     private Unbinder mBinder;
-    private Intent mIntent;
 
     @SuppressLint("SdCardPath")
     private static String path = "/sdcard/myHead";
 
-    private Bitmap head;
     public ManagerFragment() {
         // Required empty public constructor
     }
@@ -82,12 +83,12 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            title = getArguments().getString(MANAGER_TITLE);
+            String title = getArguments().getString(MANAGER_TITLE);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.fragment_manager, container, false);
@@ -151,9 +152,9 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
                 startActivity(manager_banner);
                 break;
             case R.id.manager_item_personal:
-                mIntent = getActivity().getIntent();
-                mIntent.setClass(mContext, PersonalActivity.class);
-                startActivity(mIntent);
+                Intent intent1 = Objects.requireNonNull(getActivity()).getIntent();
+                intent1.setClass(mContext, PersonalActivity.class);
+                startActivity(intent1);
                 break;
                 /*int managerId = mIntent.getIntExtra("managerId",-1);
                 Manager manager = ManagerDAO.getManagerById(managerId);*/
@@ -168,6 +169,7 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
             case 1:
                 if (resultCode == RESULT_OK){
                     //剪裁图片
+                    assert data != null;
                     cropPhoto(data.getData());
                 }
                 break;
@@ -181,12 +183,13 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
             case 3:
                 if (data != null) {
                     Bundle extras = data.getExtras();
-                    head = extras.getParcelable("data");
+                    assert extras != null;
+                    Bitmap head = extras.getParcelable("data");
                     if (head != null) {
                         //此处可以上传服务器或者将路径保存至用户数据库
                         setPicToView(head);// 保存在SD卡中
 
-                        if (head != null && head.isRecycled()) {
+                        if (head.isRecycled()) {
                             head.recycle();
                         }
                     }
@@ -214,6 +217,7 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
         } finally {
             try {
                 // 关闭流
+                assert b != null;
                 b.flush();
                 b.close();
             } catch (IOException e) {

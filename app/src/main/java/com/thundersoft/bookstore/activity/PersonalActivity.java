@@ -22,8 +22,6 @@ import butterknife.Unbinder;
 
 public class PersonalActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "PersonalActivity";
-
     @BindView(R.id.personal_name)
     SuperTextView mName;
     @BindView(R.id.personal_email)
@@ -37,7 +35,6 @@ public class PersonalActivity extends AppCompatActivity implements View.OnClickL
 
     private Unbinder mBinder;
     private Intent mIntent;
-    private ActionBar mBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +55,7 @@ public class PersonalActivity extends AppCompatActivity implements View.OnClickL
         //从数据库获得管理员信息
         int managerId = mIntent.getIntExtra("managerId", -1);
         Manager manager = ManagerDAO.getManagerById(managerId);
+        assert manager != null;
         String managerAccount = manager.getManagerAccount();
         String managerName = manager.getManagerName();
         String managerEmail = manager.getManagerEmail();
@@ -78,10 +76,10 @@ public class PersonalActivity extends AppCompatActivity implements View.OnClickL
 
         //标题栏
         setSupportActionBar(mToolbar);
-        mBar = getSupportActionBar();
-        if (mBar != null) {
-            mBar.setDisplayHomeAsUpEnabled(true);
-            mBar.setTitle("个人中心");
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setTitle("个人中心");
         }
     }
 
@@ -93,12 +91,8 @@ public class PersonalActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.personal_change_btn:
-                PersonalActivity.this.startActivity(mIntent);
-                break;
-            default:
-                break;
+        if (view.getId() == R.id.personal_change_btn) {
+            PersonalActivity.this.startActivity(mIntent);
         }
     }
 
@@ -110,10 +104,9 @@ public class PersonalActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

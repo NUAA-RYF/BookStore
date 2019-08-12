@@ -24,8 +24,6 @@ import butterknife.Unbinder;
 
 public class ChangeInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "ChangeInfoActivity";
-
     @BindView(R.id.changInfo_name)
     EditText mName;
     @BindView(R.id.changInfo_email)
@@ -44,7 +42,6 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
     private String email;
     private String info;
 
-    private ActionBar mBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +62,7 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
         int managerId = mIntent.getIntExtra("managerId", -1);
         manager = ManagerDAO.getManagerById(managerId);
         //
+        assert manager != null;
         name = manager.getManagerName();
         email = manager.getManagerEmail();
         info = manager.getManagerIntroduce();
@@ -73,34 +71,30 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
         mInfo.setText(info);
 
         setSupportActionBar(mToolbar);
-        mBar = getSupportActionBar();
-        if (mBar != null) {
-            mBar.setDisplayHomeAsUpEnabled(true);
-            mBar.setTitle("修改个人信息");
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setTitle("修改个人信息");
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.changInfo_submit:
-                name = String.valueOf(mName.getText());
-                email = String.valueOf(mEmail.getText());
-                info = String.valueOf(mInfo.getText());
-                boolean result = isAvailable(name, email, info);
-                if (result) {
-                    manager.setManagerName(name);
-                    manager.setManagerEmail(email);
-                    manager.setManagerIntroduce(info);
-                    ManagerDAO.updataManagerById(manager);
-                    //跳转至个人中心
-                    this.startActivity(mIntent);
-                    //销毁修改活动,释放资源
-                    this.finish();
-                }
-                break;
-            default:
-                break;
+        if (view.getId() == R.id.changInfo_submit) {
+            name = String.valueOf(mName.getText());
+            email = String.valueOf(mEmail.getText());
+            info = String.valueOf(mInfo.getText());
+            boolean result = isAvailable(name, email, info);
+            if (result) {
+                manager.setManagerName(name);
+                manager.setManagerEmail(email);
+                manager.setManagerIntroduce(info);
+                ManagerDAO.updataManagerById(manager);
+                //跳转至个人中心
+                this.startActivity(mIntent);
+                //销毁修改活动,释放资源
+                this.finish();
+            }
         }
     }
 
@@ -122,10 +116,9 @@ public class ChangeInfoActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

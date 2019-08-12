@@ -1,5 +1,6 @@
 package com.thundersoft.bookstore.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,22 +8,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.cardview.widget.CardView;
-
 import com.bumptech.glide.Glide;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.model.Book;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class BookListAdapter extends BaseAdapter {
-
-    private static final String TAG = "BookListAdapter";
 
     private LayoutInflater mInflater;
 
@@ -51,6 +45,7 @@ public class BookListAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

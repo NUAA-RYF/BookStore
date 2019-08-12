@@ -2,17 +2,14 @@ package com.thundersoft.bookstore.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.thundersoft.bookstore.R;
@@ -26,8 +23,6 @@ import butterknife.ButterKnife;
 
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
-
-    private static final String TAG = "BookAdapter";
 
     private Context mContext;
 
@@ -45,7 +40,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         @BindView(R.id.book_item_abstract)
         TextView bookAbstract;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             cardView = (CardView) view;
             ButterKnife.bind(this,view);

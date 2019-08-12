@@ -102,28 +102,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //账户是否存在,若存在则提示,反之注册
-    private boolean accountIsExisted(String account, AlertDialog.Builder builder, String password,String email) {
+    private void accountIsExisted(String account, AlertDialog.Builder builder, String password, String email) {
         //账户不能为空
         if (account.equals("")) {
             builder.setMessage(ACCOUNT_NOT_NULL)
                     .setTitle("错误:")
                     .setCancelable(true)
-                    .setPositiveButton("确认", (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
+                    .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())
                     .show();
-            return false;
+            return;
         }
         //电子邮箱不能为空
         if (email.equals("")) {
             builder.setMessage(EMAIL_NOT_NULL)
                     .setTitle("错误:")
                     .setCancelable(true)
-                    .setPositiveButton("确认", (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
+                    .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())
                     .show();
-            return false;
+            return;
         }
         //判断用户是否存在
         boolean result = ManagerDAO.accountIsExisted(account);
@@ -134,21 +130,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             builder.setMessage(REGISTER_SUCCESS)
                     .setTitle("注册成功:")
                     .setCancelable(true)
-                    .setPositiveButton("确认", (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
+                    .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())
                     .show();
-            return true;
         } else {
             //用户已经存在,无法注册
             builder.setMessage(ACCOUNT_EXISTED)
                     .setTitle("错误:")
                     .setCancelable(true)
-                    .setPositiveButton("确认", (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
+                    .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())
                     .show();
-            return false;
         }
     }
 
@@ -160,9 +150,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             builder.setMessage(PASSWORD_LENGTH)
                     .setTitle("错误:")
                     .setCancelable(true)
-                    .setPositiveButton("确认", (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
+                    .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())
                     .show();
             return false;
         } else if (password.equals(passwordRepeat)) {
@@ -174,9 +162,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             builder.setMessage(PASSWORD_REPEAT_ERROR)
                     .setTitle("错误:")
                     .setCancelable(true)
-                    .setPositiveButton("确认", (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
+                    .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())
                     .show();
             return false;
         }

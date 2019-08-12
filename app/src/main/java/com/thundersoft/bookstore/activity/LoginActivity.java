@@ -6,28 +6,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.allen.library.SuperButton;
-import com.google.gson.Gson;
 import com.thundersoft.bookstore.Dao.ManagerDAO;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.model.Manager;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private static final String TAG = "LoginActivity";
 
     /*
     * 记住密码
@@ -62,10 +55,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private SharedPreferences pref;
 
-    private SharedPreferences.Editor mEditor;
-
-    private boolean isRemember;
-
     private Manager manager;
 
     @Override
@@ -79,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initData(){
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        isRemember = pref.getBoolean(REMEMBER_PASSWORD,false);
+        boolean isRemember = pref.getBoolean(REMEMBER_PASSWORD, false);
 
         if (isRemember){
             //将账号密码设置于文本框中
@@ -128,15 +117,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         result = LOGIN_SUCCESS;
 
                         //记住账号密码功能
-                        mEditor = pref.edit();
+                        SharedPreferences.Editor editor = pref.edit();
                         if(mRemember.isChecked()){
-                            mEditor.putBoolean(REMEMBER_PASSWORD,true);
-                            mEditor.putString(ACCOUNT,account);
-                            mEditor.putString(PASSWORD,password);
+                            editor.putBoolean(REMEMBER_PASSWORD,true);
+                            editor.putString(ACCOUNT,account);
+                            editor.putString(PASSWORD,password);
                         }else {
-                            mEditor.clear();
+                            editor.clear();
                         }
-                        mEditor.apply();
+                        editor.apply();
                     } else {
                         flag = true;
                         result = ERROR_LOGIN;
@@ -157,11 +146,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean checkIsNull(String account, String password) {
-        if (TextUtils.isEmpty(account) | TextUtils.isEmpty(password)) {
-            return true;
-        } else {
-            return false;
-        }
+        return TextUtils.isEmpty(account) | TextUtils.isEmpty(password);
     }
 
     private void MessageDialog(AlertDialog.Builder builder, boolean flag, String message) {
@@ -169,9 +154,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             builder.setTitle("错误:");
             builder.setMessage(message);
             builder.setCancelable(true);
-            builder.setNegativeButton("确认", (dialogInterface, i) -> {
-                dialogInterface.dismiss();
-            });
+            builder.setNegativeButton("确认", (dialogInterface, i) -> dialogInterface.dismiss());
             builder.show();
         } else {
             this.startActivity(mIntent);

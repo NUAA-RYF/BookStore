@@ -57,21 +57,14 @@ public class ManagerDAO {
     }
 
     //注册用户,对数据库进行增加
-    public static boolean register(Manager manager){
+    public static void register(Manager manager){
         manager.save();
-        return false;
     }
 
     //判断用户是否存在
     public static boolean accountIsExisted(String account){
         List<Manager> mManagers = DataSupport.where("managername=?",account).find(Manager.class);
-        if (mManagers.size() > 0){
-            //账户已经存在,无法注册
-            return false;
-        }else {
-            //账户不存在,可以注册
-            return true;
-        }
+        return mManagers.size() <= 0;
     }
 
 }

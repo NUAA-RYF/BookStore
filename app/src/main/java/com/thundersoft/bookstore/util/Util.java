@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -34,7 +35,7 @@ public class Util {
      * 处理Book类型JSON数组
      * 存入LitePal数据库
      * */
-    public static boolean handleBookResponse(String response, String categoryId) {
+    private static void handleBookResponse(String response, String categoryId) {
 
         if (!TextUtils.isEmpty(response)) {
             try {
@@ -62,15 +63,11 @@ public class Util {
                         book.save();
                         Log.i(TAG, "handleResponse: 书籍数据存储成功!");
                     }
-                    return true;
-                } else {
-                    return false;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return false;
     }
 
     /*
@@ -78,7 +75,7 @@ public class Util {
      * 处理BookCategory类型JSON数组
      * 存入LitePal数据库
      * */
-    public static boolean handleCategoryResponse(String response) {
+    private static void handleCategoryResponse(String response) {
         if (!TextUtils.isEmpty(response)) {
             try {
                 JSONObject jsonObject = new JSONObject(response);
@@ -94,20 +91,17 @@ public class Util {
                         Log.i(TAG, "handleCategoryResponse: id " + id);
                         Log.i(TAG, "handleCategoryResponse: category " + catalog);
                     }
-                    return true;
                 } else {
                     Log.i(TAG, "handleBookResponse: 数据库存储失败！ resultCode " + resultCode);
-                    return false;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return false;
     }
 
 
-    public static boolean downloadCategoryFromServer() {
+    public static void downloadCategoryFromServer() {
         String address = "http://apis.juhe.cn/goodbook/catalog?key=" + KEY +
                 "&dtype=json";
         HttpUtil.sendOkhttpRequest(address, new Callback() {
@@ -118,14 +112,13 @@ public class Util {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseText = response.body().string();
+                String responseText = Objects.requireNonNull(response.body()).string();
                 handleCategoryResponse(responseText);
             }
         });
-        return false;
     }
 
-    public static boolean downloadBookFromServer(String catalogId) {
+    public static void downloadBookFromServer(String catalogId) {
         String address = "http://apis.juhe.cn/goodbook/query?key=" + KEY +
                 "&catalog_id=" + catalogId +
                 "&pn=" + PN +
@@ -138,11 +131,10 @@ public class Util {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseText = response.body().string();
+                String responseText = Objects.requireNonNull(response.body()).string();
                 handleBookResponse(responseText,catalogId);
             }
         });
-        return false;
     }
 
 }

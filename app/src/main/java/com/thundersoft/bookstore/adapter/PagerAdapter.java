@@ -6,6 +6,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
@@ -25,6 +28,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         super.destroyItem(container, position, object);
     }
 
+    @NotNull
     @Override
     public Fragment getItem(int position) {
         return mList.get(position);

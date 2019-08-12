@@ -28,6 +28,7 @@ import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
 
+import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
@@ -46,9 +47,8 @@ public class BookRecommendFragment extends Fragment {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-    private OnFragmentInteractionListener mListener;
 
-    private Context mContext;
+
 
     //根视图
     private View rootView;
@@ -74,7 +74,7 @@ public class BookRecommendFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_bookrecommend, container, false);
@@ -123,9 +123,9 @@ public class BookRecommendFragment extends Fragment {
         List<Book> mBookList = new ArrayList<>();
         String[] recommend_bookId = mManagement.getBookRecommendId().split(" ");
         if (recommendIsAvailable(recommend_bookId)){
-            for (int i = 0; i < recommend_bookId.length; i++) {
-                if (!recommend_bookId[i].equals("0")){
-                    Book book = DataSupport.find(Book.class,Integer.parseInt(recommend_bookId[i]));
+            for (String s : recommend_bookId) {
+                if (!s.equals("0")) {
+                    Book book = DataSupport.find(Book.class, Integer.parseInt(s));
                     mBookList.add(book);
                 }
             }
@@ -137,10 +137,10 @@ public class BookRecommendFragment extends Fragment {
         List<String> urls = new ArrayList<>();
         String[] banner_bookId = mManagement.getBannerManagement().split(" ");
         if (bannerIsAvailable(banner_bookId)){
-            for (int i = 0; i < banner_bookId.length; i++) {
-                if (!banner_bookId[i].equals("0")){
-                    int tempId = Integer.parseInt(banner_bookId[i]);
-                    Book book = DataSupport.find(Book.class,tempId);
+            for (String s : banner_bookId) {
+                if (!s.equals("0")) {
+                    int tempId = Integer.parseInt(s);
+                    Book book = DataSupport.find(Book.class, tempId);
                     urls.add(book.getImageurl());
                 }
             }
@@ -168,7 +168,7 @@ public class BookRecommendFragment extends Fragment {
 
 
 
-            GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
+            GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
             BookAdapter bookAdapter = new BookAdapter(mBookList);
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setAdapter(bookAdapter);
@@ -223,13 +223,6 @@ public class BookRecommendFragment extends Fragment {
         queryBookFromDatabase();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -242,7 +235,6 @@ public class BookRecommendFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -252,15 +244,9 @@ public class BookRecommendFragment extends Fragment {
         mBinder.unbind();
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
     private boolean bannerIsAvailable(String[] id){
-        int length = id.length;
-        for (int i = 0; i < length; i++) {
-            if (!id[i].equals("0")){
+        for (String s : id) {
+            if (!s.equals("0")) {
                 return true;
             }
         }
@@ -268,9 +254,8 @@ public class BookRecommendFragment extends Fragment {
     }
 
     private boolean recommendIsAvailable(String[] id){
-        int length = id.length;
-        for (int i = 0; i < length; i++) {
-            if (!id[i].equals("0")){
+        for (String s : id) {
+            if (!s.equals("0")) {
                 return true;
             }
         }

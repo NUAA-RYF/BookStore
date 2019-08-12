@@ -76,13 +76,13 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
                 holder.mBookIsSelected.setChecked(false);
 
                 //移除管理列表中的id
-                StringBuffer newId = new StringBuffer();
+                StringBuilder newId = new StringBuilder();
                 for (int i = 0; i < bookId.length; i++) {
                     String tempId = String.valueOf(book.getId());
                     if (bookId[i].equals(tempId)) {
                         bookId[i] = "0";
                     }
-                    newId.append(bookId[i] + " ");
+                    newId.append(bookId[i]).append(" ");
                 }
                 mManagement.setBannerManagement(newId.toString());
             }else {
@@ -94,14 +94,14 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
                     book.setIsBanner(1);
                     book.update(book.getId());
                     holder.mBookIsSelected.setChecked(true);
-                    StringBuffer newId = new StringBuffer();
+                    StringBuilder newId = new StringBuilder();
 
                     //若长度小于5,则追加,反之将为0的改为书籍id
                     if (bookId.length < 5) {
-                        for (int i = 0; i < bookId.length; i++) {
-                            newId.append(bookId[i] + " ");
+                        for (String s : bookId) {
+                            newId.append(s).append(" ");
                         }
-                        newId.append(book.getId() + "");
+                        newId.append(book.getId()).append(" ");
                     } else {
 
                         //将书籍的id改为0
@@ -111,7 +111,7 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
                                 bookId[i] = String.valueOf(book.getId());
                                 flag = false;
                             }
-                            newId.append(bookId[i] + " ");
+                            newId.append(bookId[i]).append(" ");
                         }
                     }
                     mManagement.setBannerManagement(newId.toString());
@@ -150,12 +150,12 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
                 //原本状态为选中,现要进行取消操作,分别进行书籍取消和管理取消
                 book.setIsRecommend(-1);
                 holder.mBookIsRecommend.setChecked(false);
-                StringBuffer newId = new StringBuffer();
+                StringBuilder newId = new StringBuilder();
                 for (int i = 0; i < bookId.length; i++) {
                     if (bookId[i].equals(String.valueOf(book.getId()))){
                         bookId[i] = "0";
                     }
-                    newId.append(bookId[i] + " ");
+                    newId.append(bookId[i]).append(" ");
                 }
                 mManagement.setBookRecommendId(newId.toString());
             }else {
@@ -163,14 +163,14 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
                 if (bookIsAvailable(bookId,10)){
                     book.setIsRecommend(1);
                     holder.mBookIsRecommend.setChecked(true);
-                    StringBuffer newId = new StringBuffer();
+                    StringBuilder newId = new StringBuilder();
                     boolean flag = true;
                     for (int i = 0; i < bookId.length; i++) {
                         if (bookId[i].equals("0") && flag){
                             bookId[i] = String.valueOf(book.getId());
                             flag = false;
                         }
-                        newId.append(bookId[i] + " ");
+                        newId.append(bookId[i]).append(" ");
                     }
                     mManagement.setBookRecommendId(newId.toString());
                 }else {
@@ -192,8 +192,8 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
         if (length > 0 && length < num){
             return true;
         }else {
-            for (int i = 0; i < length; i++) {
-                if (bookId[i].equals("0")){
+            for (String s : bookId) {
+                if (s.equals("0")) {
                     return true;
                 }
             }
@@ -221,7 +221,7 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
         @BindView(R.id.banner_book_isRecommend)
         AppCompatCheckBox mBookIsRecommend;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             bannerBookView = view;
             ButterKnife.bind(this, view);

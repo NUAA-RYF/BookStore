@@ -1,13 +1,11 @@
 package com.thundersoft.bookstore.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -21,9 +19,11 @@ import com.thundersoft.bookstore.model.Book;
 import com.thundersoft.bookstore.model.BookCategory;
 import com.thundersoft.bookstore.util.Util;
 
+import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +46,6 @@ public class BookListFragment extends Fragment {
     @BindView(R.id.book_list_listView)
     ListView mBook;
 
-    private OnFragmentInteractionListener mListener;
     //根视图
     private View rootView;
 
@@ -74,14 +73,13 @@ public class BookListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate: ");
         if (getArguments() != null) {
             String mFragment_Title = getArguments().getString(FRAGMENT_TITLE);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         if (rootView == null) {
@@ -105,18 +103,10 @@ public class BookListFragment extends Fragment {
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     private void lazyload() {
@@ -147,9 +137,7 @@ public class BookListFragment extends Fragment {
 
                 if (mCurrentLists.size() > 0){
                     //若当前列表种类中,书籍为零,则从网络获取
-                    for (int i = 0; i < mCurrentLists.size(); i++) {
-                        mBookLists.add(mCurrentLists.get(i));
-                    }
+                    mBookLists.addAll(mCurrentLists);
                 }else{
                     //从网络获取书籍信息
                     Util.downloadBookFromServer(currentId);
@@ -164,7 +152,7 @@ public class BookListFragment extends Fragment {
                 Book book = mBookLists.get(position);
                 //传递book对象
                 intent.putExtra("book", new Gson().toJson(book));
-                getContext().startActivity(intent);
+                Objects.requireNonNull(getContext()).startActivity(intent);
             });
         }else {
             //列表种类为零,无法显示,从网络获取
@@ -196,8 +184,6 @@ public class BookListFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    interface OnFragmentInteractionListener {
     }
 }

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.model.BookCategory;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -17,15 +19,14 @@ import butterknife.ButterKnife;
 
 public class BookCategoryAdapter extends ArrayAdapter<BookCategory> {
 
-    private static final String TAG = "BookCategoryAdapter";
-
     public BookCategoryAdapter(Context context, int resource, List<BookCategory> objects) {
         super(context, resource, objects);
     }
 
 
+    @NotNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NotNull ViewGroup parent) {
         BookCategory bookCategory = getItem(position);
         View view;
         ViewHolder viewHolder;
@@ -37,6 +38,7 @@ public class BookCategoryAdapter extends ArrayAdapter<BookCategory> {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
+        assert bookCategory != null;
         viewHolder.bookCatagoryName.setText(bookCategory.getBookCategoryName());
         return view;
     }

@@ -2,9 +2,7 @@ package com.thundersoft.bookstore.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,16 +20,12 @@ import butterknife.ButterKnife;
 
 public class BannerManagementActivity extends AppCompatActivity {
 
-    private static final String TAG = "BannerManagement";
-
     @BindView(R.id.banner_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.banner_categoryList)
     ListView mCategoryListView;
     @BindView(R.id.banner_book_recyclerView)
     RecyclerView mBookRecyclerView;
-
-    private ActionBar mBar;
 
     private List<Book> mBookList;
 
@@ -40,8 +34,6 @@ public class BannerManagementActivity extends AppCompatActivity {
     private List<BookCategory> mCategoryList;
 
     private BannerBookAdapter mBannerBookAdapter;
-
-    private BookCategoryAdapter mBookCategoryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +55,7 @@ public class BannerManagementActivity extends AppCompatActivity {
             //若当前书籍列表不为空,则显示
             if (mCurrentBookList.size() > 0){
                 mBookList.clear();
-                for (int i = 0; i < mCurrentBookList.size(); i++) {
-                    mBookList.add(mCurrentBookList.get(i));
-                }
+                mBookList.addAll(mCurrentBookList);
                 mCurrentBookList.clear();
             }
             mBannerBookAdapter.notifyDataSetChanged();
@@ -82,8 +72,8 @@ public class BannerManagementActivity extends AppCompatActivity {
 
     private void initControls() {
         //书籍种类列表适配器和视图
-        mBookCategoryAdapter = new BookCategoryAdapter(this, android.R.layout.simple_list_item_1, mCategoryList);
-        mCategoryListView.setAdapter(mBookCategoryAdapter);
+        BookCategoryAdapter bookCategoryAdapter = new BookCategoryAdapter(this, android.R.layout.simple_list_item_1, mCategoryList);
+        mCategoryListView.setAdapter(bookCategoryAdapter);
 
         //书籍适配器和视图
         mBannerBookAdapter = new BannerBookAdapter(mBookList);
@@ -91,20 +81,19 @@ public class BannerManagementActivity extends AppCompatActivity {
 
         //标题栏
         setSupportActionBar(mToolbar);
-        mBar = getSupportActionBar();
-        if (mBar != null) {
-            mBar.setDisplayHomeAsUpEnabled(true);
-            mBar.setTitle("书籍管理");
+        ActionBar bar = getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(true);
+            bar.setTitle("书籍管理");
         }
     }
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
