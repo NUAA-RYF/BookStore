@@ -47,9 +47,6 @@ public class BookRecommendFragment extends Fragment {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-
-
-
     //根视图
     private View rootView;
     //是否准备
