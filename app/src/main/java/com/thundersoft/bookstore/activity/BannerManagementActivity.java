@@ -1,6 +1,7 @@
 package com.thundersoft.bookstore.activity;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import com.thundersoft.bookstore.adapter.BannerBookAdapter;
 import com.thundersoft.bookstore.adapter.BookCategoryAdapter;
 import com.thundersoft.bookstore.model.Book;
 import com.thundersoft.bookstore.model.BookCategory;
+
+import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
 import java.util.List;
 import butterknife.BindView;
@@ -62,6 +65,26 @@ public class BannerManagementActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar,menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NotNull MenuItem item){
+        switch (item.getItemId()){
+            case R.id.add_book:
+                break;
+            case R.id.add_bookList:
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     private void initData() {
