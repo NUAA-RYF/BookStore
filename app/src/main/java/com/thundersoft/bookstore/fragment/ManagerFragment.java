@@ -51,7 +51,6 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     SuperTextView mPersonal;
     @BindView(R.id.manager_item_bookApply)
     SuperTextView mBookApply;
-    SuperTextView mAddBook;
     @BindView(R.id.manager_item_banner)
     SuperTextView mBanner;
 
@@ -240,7 +239,7 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     }
 
     //通过路径打开图片
-    private Bitmap getBitmap(String pathString) {
+    /*private Bitmap getBitmap(String pathString) {
         Bitmap bitmap = null;
         try {
             File file = new File(pathString);
@@ -251,7 +250,7 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
         return bitmap;
-    }
+    }*/
 
     @Override
     public void onDestroyView() {
