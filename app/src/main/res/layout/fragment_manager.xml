@@ -59,35 +59,11 @@
             />
 
         <com.allen.library.SuperTextView
-            android:id="@+id/manager_item_addBookCategory"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/manager_item_bookApply"
-            app:sDividerLineColor="@color/colorSilver"
-            app:sDividerLineHeight="1dp"
-            app:sDividerLineType="both"
-            app:sLeftTextString="@string/management_bookListAdd"
-            app:sRightIconRes="@mipmap/icon_forward"
-            app:sLeftTvDrawableLeft="@mipmap/icon_book_add"/>
-        <com.allen.library.SuperTextView
-            android:id="@+id/manager_item_addBook"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            app:layout_constraintTop_toBottomOf="@id/manager_item_addBookCategory"
-            app:sDividerLineColor="@color/colorSilver"
-            app:sDividerLineHeight="1dp"
-            app:sDividerLineType="bottom"
-            app:sLeftTextString="@string/management_bookAdd"
-            app:sRightIconRes="@mipmap/icon_forward"
-            app:sLeftTvDrawableLeft="@mipmap/icon_book_add"/>
-
-        <com.allen.library.SuperTextView
             android:id="@+id/manager_item_banner"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/manager_item_addBook"
+            app:layout_constraintTop_toBottomOf="@id/manager_item_bookApply"
             app:sDividerLineColor="@color/colorSilver"
             app:sDividerLineHeight="1dp"
             app:sDividerLineType="both"

@@ -51,9 +51,6 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     SuperTextView mPersonal;
     @BindView(R.id.manager_item_bookApply)
     SuperTextView mBookApply;
-    @BindView(R.id.manager_item_addBookCategory)
-    SuperTextView mAddCategory;
-    @BindView(R.id.manager_item_addBook)
     SuperTextView mAddBook;
     @BindView(R.id.manager_item_banner)
     SuperTextView mBanner;

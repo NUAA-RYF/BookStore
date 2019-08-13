@@ -1,21 +1,15 @@
 package com.thundersoft.bookstore.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.adapter.BookAdapter;
@@ -27,10 +21,8 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.loader.ImageLoader;
-
 import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
-
 import java.util.ArrayList;
 import java.util.List;
 
