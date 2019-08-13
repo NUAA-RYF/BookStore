@@ -78,7 +78,7 @@ public class AddBookListActivity extends AppCompatActivity implements View.OnCli
             String name = String.valueOf(mName.getText());
             String stringId = String.valueOf(mId.getText());
             boolean flag = true;
-
+            int id = 0;
             //判断名称和ID不能为空
             if (name.equals("") || stringId.equals("")) {
                 builder.setTitle("添加失败")
@@ -87,10 +87,12 @@ public class AddBookListActivity extends AppCompatActivity implements View.OnCli
                         .show();
                 flag = false;
             }
-            int id = Integer.parseInt(stringId);
+            if (flag){
+                id = Integer.parseInt(stringId);
+            }
 
             //判断ID范围应为1~999
-            if (id < 1 || id >= 1000) {
+            if ((id < 1 || id >= 1000) && flag) {
                 builder.setTitle("添加失败")
                         .setMessage("ID范围应为1~999!")
                         .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())

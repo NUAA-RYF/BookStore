@@ -144,7 +144,6 @@ public class BookListFragment extends Fragment {
                         Util.downloadBookFromServer(currentId);
                     }
                 }
-
                 mCurrentLists.clear();
                 bookListAdapter.notifyDataSetChanged();
             });
