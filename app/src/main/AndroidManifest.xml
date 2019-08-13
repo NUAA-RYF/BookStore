@@ -13,14 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.BannerManagementActivity"></activity>
-        <activity android:name=".activity.ChangeInfoActivity" />
+        <activity android:name=".activity.AddBookActivity"></activity>
+        <activity android:name=".activity.AddBookListActivity" /> <!-- 书籍管理页面 -->
+        <activity android:name=".activity.BookManagementActivity" /> <!-- 修改信息页面 -->
+        <activity android:name=".activity.ChangeInfoActivity" /> <!-- 个人中心页面 -->
         <activity
             android:name=".activity.PersonalActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance" /> <!-- 注册页面 -->
         <activity
             android:name=".activity.RegisterActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance" /> <!-- 登录页面 -->
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleInstance">
@@ -35,11 +37,10 @@
             android:name=".provider.BookContentProvider"
             android:authorities="com.thundersoft.bookstore.provider"
             android:enabled="true"
-            android:exported="true" />
-
+            android:exported="true" /> <!-- 书籍详情显示页面 -->
         <activity
             android:name=".activity.BookActivity"
-            android:theme="@style/BookActivityTheme" />
+            android:theme="@style/BookActivityTheme" /> <!-- 主页面 -->
         <activity android:name=".activity.MainActivity" />
     </application>
 

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddBookListActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/add_bookList_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/colorBlue_Light"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/add_bookList_nameImg"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:src="@mipmap/icon_add_categoryimg"
+        app:layout_constraintTop_toTopOf="@id/add_bookList_name"
+        app:layout_constraintRight_toLeftOf="@id/add_bookList_name"
+        app:layout_constraintBottom_toBottomOf="@id/add_bookList_name"/>
+    <EditText
+        android:id="@+id/add_bookList_name"
+        android:layout_width="250sp"
+        android:layout_height="50sp"
+        android:hint="@string/add_bookList_name"
+        android:gravity="center_vertical|start"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintTop_toBottomOf="@id/add_bookList_toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/add_bookList_idImg"
+        android:layout_width="40sp"
+        android:layout_height="40sp"
+        android:src="@mipmap/icon_id"
+        app:layout_constraintTop_toTopOf="@id/add_bookList_id"
+        app:layout_constraintRight_toLeftOf="@id/add_bookList_id"
+        app:layout_constraintBottom_toBottomOf="@id/add_bookList_id"/>
+
+    <EditText
+        android:id="@+id/add_bookList_id"
+        android:layout_width="250sp"
+        android:layout_height="50sp"
+        android:hint="@string/add_bookList_id"
+        android:gravity="center_vertical|start"
+        app:layout_constraintVertical_bias="0.08"
+        app:layout_constraintTop_toBottomOf="@id/add_bookList_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
+    <com.allen.library.SuperButton
+        android:id="@+id/add_bookList_addBtn"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        app:sCornersRadius="100dp"
+        android:text="@string/add_bookList_add"
+        android:textColor="@color/white"
+        app:sSolidColor="@color/colorBlue_Light"
+        app:sStrokeWidth="2dp"
+        app:sStrokeColor="@color/bootstrap_edittext_disabled"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintTop_toBottomOf="@id/add_bookList_toolbar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

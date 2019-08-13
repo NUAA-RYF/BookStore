@@ -18,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.allen.library.SuperTextView;
 import com.thundersoft.bookstore.R;
-import com.thundersoft.bookstore.activity.BannerManagementActivity;
+import com.thundersoft.bookstore.activity.BookManagementActivity;
 import com.thundersoft.bookstore.activity.PersonalActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -145,7 +145,7 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
                 startActivityForResult(intent,1);
                 break;
             case R.id.manager_item_banner:
-                Intent manager_banner = new Intent(mContext, BannerManagementActivity.class);
+                Intent manager_banner = new Intent(mContext, BookManagementActivity.class);
                 startActivity(manager_banner);
                 break;
             case R.id.manager_item_personal:

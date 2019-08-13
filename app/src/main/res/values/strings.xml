@@ -33,5 +33,17 @@
     <string name="banner_bookAdd">添加书籍</string>
     <string name="banner_bookListAdd">添加书籍列表</string>
 
+    <!--添加书籍种类页面-->
+    <string name="add_bookList_name">请输入书籍种类名称</string>
+    <string name="add_bookList_id">请输入书籍种类ID(1~999)</string>
+    <string name="add_bookList_add">添加</string>
+
+    <!--添加书籍页面-->
+    <string name="add_book_name">请输入书籍名称</string>
+    <string name="add_book_abstract">请输入书籍摘要</string>
+    <string name="add_book_content">请输入书籍内容</string>
+    <string name="add_book_imageURL">请输入书籍图片URL</string>
+    <string name="add_book_category">请选择所属书籍种类</string>
+    <string name="add_book_add">添加</string>
 </resources>
 

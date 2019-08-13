@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="add_book"
+        android:id="@+id/add_book"
         android:title="@string/banner_bookAdd"
         app:showAsAction="never"/>
 
     <item
-        android:id="add_bookList"
+        android:id="@+id/add_bookList"
         android:title="@string/banner_bookListAdd"
         app:showAsAction="never"/>
 </menu>

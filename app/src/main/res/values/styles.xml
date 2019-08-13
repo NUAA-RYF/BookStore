@@ -15,4 +15,36 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--改变toolbar的左边按钮的颜色-->
+    <style name="Toolbar" parent="AppTheme">
+        <!--菜单栏在标题栏下方-->
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+        <!--标题栏右侧图标-->
+        <item name="actionOverflowButtonStyle">@style/ActionButton.Overflow.Menu</item>
+        <!--修改左侧颜色-->
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <!--设置标题栏右侧图标-->
+    <style name="ActionButton.Overflow.Menu" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
+        <item name="android:src">@mipmap/icon_add</item>
+    </style>
+    
+    <!--菜单栏主题-->
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <!-- 弹出层背景颜色 -->
+        <item name="android:popupBackground">@color/white</item>
+        <!-- 设置弹出菜单文字颜色 -->
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+    <!--管理页面主题,无标题栏-->
+    <style name="ManagementTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">#0fff</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
 </resources>

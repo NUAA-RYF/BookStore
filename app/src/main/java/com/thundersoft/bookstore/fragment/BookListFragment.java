@@ -140,7 +140,9 @@ public class BookListFragment extends Fragment {
                     mBookLists.addAll(mCurrentLists);
                 }else{
                     //从网络获取书籍信息
-                    Util.downloadBookFromServer(currentId);
+                    if (Integer.parseInt(currentId) >= 242 && Integer.parseInt(currentId) <= 258){
+                        Util.downloadBookFromServer(currentId);
+                    }
                 }
 
                 mCurrentLists.clear();

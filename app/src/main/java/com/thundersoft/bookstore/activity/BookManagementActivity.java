@@ -1,10 +1,11 @@
 package com.thundersoft.bookstore.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BannerManagementActivity extends AppCompatActivity {
+public class BookManagementActivity extends AppCompatActivity {
 
     @BindView(R.id.banner_toolbar)
     Toolbar mToolbar;
@@ -41,7 +42,7 @@ public class BannerManagementActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_banner_management);
+        setContentView(R.layout.activity_book_management);
         ButterKnife.bind(this);
         initData();
         initControls();
@@ -78,8 +79,15 @@ public class BannerManagementActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NotNull MenuItem item){
         switch (item.getItemId()){
             case R.id.add_book:
+                Intent intent = new Intent(this,AddBookActivity.class);
+                this.startActivity(intent);
                 break;
             case R.id.add_bookList:
+                intent = new Intent(this,AddBookListActivity.class);
+                this.startActivity(intent);
+                break;
+            case android.R.id.home:
+                finish();
                 break;
             default:
                 break;
@@ -109,15 +117,5 @@ public class BannerManagementActivity extends AppCompatActivity {
             bar.setDisplayHomeAsUpEnabled(true);
             bar.setTitle("书籍管理");
         }
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
