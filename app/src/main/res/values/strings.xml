@@ -18,7 +18,7 @@
     <!--管理页面-->
     <string name="management_book">书籍管理</string>
     <string name="management_personal">个人中心</string>
-
+    <string name="management_message">消息管理</string>
     <string name="management_bookLend">借书申请管理</string>
 
     <!--个人中心-->
@@ -45,5 +45,17 @@
     <string name="add_book_imageURL">请输入书籍图片URL</string>
     <string name="add_book_category">请选择所属书籍种类</string>
     <string name="add_book_add">添加</string>
+
+    <!--消息管理页面-->
+    <string name="message_edit">编辑</string>
+    <string name="message_delete">删除</string>
+
+    <!--消息栏菜单-->
+    <string name="add_message">添加消息</string>
+
+    <!--添加消息页面-->
+    <string name="add_message_addBtn">添加</string>
+    <string name="add_message_title">请输入消息标题</string>
+    <string name="add_message_content">请输入消息内容</string>
 </resources>
 

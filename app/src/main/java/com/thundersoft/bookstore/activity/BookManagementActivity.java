@@ -70,7 +70,7 @@ public class BookManagementActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar,menu);
+        getMenuInflater().inflate(R.menu.menu_add_book,menu);
         return true;
     }
 

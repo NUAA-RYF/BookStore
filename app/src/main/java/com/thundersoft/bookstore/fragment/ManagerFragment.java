@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,11 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.allen.library.SuperTextView;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.activity.BookManagementActivity;
+import com.thundersoft.bookstore.activity.MessageActivity;
 import com.thundersoft.bookstore.activity.PersonalActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +43,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link ManagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ManagerFragment extends Fragment implements View.OnClickListener{
+public class ManagerFragment extends Fragment implements View.OnClickListener {
 
     private static final String MANAGER_TITLE = "title";
 
@@ -53,6 +55,8 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     SuperTextView mBookApply;
     @BindView(R.id.manager_item_banner)
     SuperTextView mBanner;
+    @BindView(R.id.manager_item_message)
+    SuperTextView mMessage;
 
 
     private View convertView;
@@ -90,17 +94,18 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
             convertView = inflater.inflate(R.layout.fragment_manager, container, false);
         }
         mContext = getContext();
-        mBinder = ButterKnife.bind(this,convertView);
+        mBinder = ButterKnife.bind(this, convertView);
         initData();
         initClickListener();
 
         return convertView;
     }
 
-    private void initClickListener(){
+    private void initClickListener() {
         mImage.setOnClickListener(this);
         mBanner.setOnClickListener(this);
         mPersonal.setOnClickListener(this);
+        mMessage.setOnClickListener(this);
     }
 
     private void initData() {
@@ -137,23 +142,25 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.manager_Image:
-                Intent intent = new Intent(Intent.ACTION_PICK,null);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-                startActivityForResult(intent,1);
+                Intent image_intent = new Intent(Intent.ACTION_PICK, null);
+                image_intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(image_intent, 1);
                 break;
             case R.id.manager_item_banner:
                 Intent manager_banner = new Intent(mContext, BookManagementActivity.class);
                 startActivity(manager_banner);
                 break;
             case R.id.manager_item_personal:
-                Intent intent1 = Objects.requireNonNull(getActivity()).getIntent();
-                intent1.setClass(mContext, PersonalActivity.class);
-                startActivity(intent1);
+                Intent personal_intent = Objects.requireNonNull(getActivity()).getIntent();
+                personal_intent.setClass(mContext, PersonalActivity.class);
+                startActivity(personal_intent);
                 break;
-                /*int managerId = mIntent.getIntExtra("managerId",-1);
-                Manager manager = ManagerDAO.getManagerById(managerId);*/
+            case R.id.manager_item_message:
+                Intent message_intent = new Intent(mContext, MessageActivity.class);
+                startActivity(message_intent);
+                break;
             default:
                 break;
         }
@@ -161,9 +168,9 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case 1:
-                if (resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     //剪裁图片
                     assert data != null;
                     cropPhoto(data.getData());
@@ -224,7 +231,7 @@ public class ManagerFragment extends Fragment implements View.OnClickListener{
     }
 
     //利用系统裁剪图片
-    private void cropPhoto(Uri uri){
+    private void cropPhoto(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         intent.putExtra("crop", "true");

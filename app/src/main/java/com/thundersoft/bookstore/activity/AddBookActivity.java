@@ -8,25 +8,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.Toolbar;
-
 import com.allen.library.SuperButton;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.model.Book;
 import com.thundersoft.bookstore.model.BookCategory;
-import com.thundersoft.bookstore.model.Management;
-
 import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

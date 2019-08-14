@@ -141,7 +141,7 @@ public class BookRecommendFragment extends Fragment {
 
         //轮播图属性设置
         mBanner.setImages(urls)
-                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                .setBannerStyle(BannerConfig.NUM_INDICATOR)
                 .setDelayTime(1500)
                 .setImageLoader(new GlideImageLoader())
                 .isAutoPlay(true)

@@ -22,7 +22,7 @@
         <com.youth.banner.Banner
             android:id="@+id/book_recommend_banner"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="150dp"
             android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="10dp"
             app:image_scale_type="fit_center"

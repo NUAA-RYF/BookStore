@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="BookStore"/>
-    <version value="22"/>
+    <version value="24"/>
 
     <list>
         <mapping class="com.thundersoft.bookstore.model.Book"/>
         <mapping class="com.thundersoft.bookstore.model.BookCategory"/>
         <mapping class="com.thundersoft.bookstore.model.Manager"/>
         <mapping class="com.thundersoft.bookstore.model.Management"/>
+        <mapping class="com.thundersoft.bookstore.model.Message"/>
     </list>
 </litepal>
