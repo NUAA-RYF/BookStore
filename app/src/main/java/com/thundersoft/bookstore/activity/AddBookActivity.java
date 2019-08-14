@@ -97,11 +97,10 @@ public class AddBookActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.add_book_addBtn) {
-            String name = String.valueOf(mName.getText());
-            String aBstract = String.valueOf(mAbstract.getText());
-            String url = String.valueOf(mImgUrl.getText());
-            String content = String.valueOf(mContent.getText());
-            Log.i(TAG, "onClick: category name :" + categoryName);
+            String name = mName.getText().toString();
+            String aBstract = mAbstract.getText().toString();
+            String url = mImgUrl.getText().toString();
+            String content = mContent.getText().toString();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             boolean flag = true;
             if (name.equals("")) {

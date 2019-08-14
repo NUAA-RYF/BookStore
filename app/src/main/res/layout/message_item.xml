@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/message_item_cardView"
         app:cardCornerRadius="10dp"
         android:elevation="5dp"
         android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
                 android:ellipsize="end"
                 android:text="test"
                 android:textColor="@color/black"
-                android:textSize="40sp"
+                android:textSize="25sp"
                 android:gravity="start|center_vertical"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
@@ -45,31 +46,25 @@
                 app:layout_constraintTop_toBottomOf="@id/message_item_title"
                 app:layout_constraintLeft_toLeftOf="@id/message_item_title"/>
 
-            <com.allen.library.SuperButton
+            <Button
                 android:id="@+id/message_item_edit"
                 android:layout_width="85sp"
                 android:layout_height="40dp"
                 android:textColor="@color/white"
                 android:text="@string/message_edit"
-                app:sCornersRadius="100dp"
-                app:sSolidColor="@color/colorBlue_Light"
-                app:sStrokeWidth="2dp"
-                app:sStrokeColor="@color/bootstrap_edittext_disabled"
+                android:background="@color/light_blue"
                 app:layout_constraintVertical_bias="0.9"
                 app:layout_constraintTop_toBottomOf="@id/message_item_content"
                 app:layout_constraintLeft_toLeftOf="@id/message_item_content"
                 />
 
-            <com.allen.library.SuperButton
+            <Button
                 android:id="@+id/message_item_delete"
                 android:layout_width="85sp"
                 android:layout_height="40dp"
                 android:textColor="@color/white"
                 android:text="@string/message_delete"
-                app:sCornersRadius="100dp"
-                app:sSolidColor="@color/colorBlue_Light"
-                app:sStrokeWidth="2dp"
-                app:sStrokeColor="@color/bootstrap_edittext_disabled"
+                android:background="@color/light_blue"
                 app:layout_constraintVertical_bias="0.9"
                 app:layout_constraintTop_toBottomOf="@id/message_item_content"
                 app:layout_constraintLeft_toRightOf="@id/message_item_edit"

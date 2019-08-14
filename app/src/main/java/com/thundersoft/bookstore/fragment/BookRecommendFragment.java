@@ -1,7 +1,10 @@
 package com.thundersoft.bookstore.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +28,16 @@ import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class BookRecommendFragment extends Fragment {
+
     private static final String TAG = "BookRecommendFragment";
     private static final String FRAGMENT_TITLE = "title";
+    private static final int UPDATE_BOOK = 2;
+    private static final int UPDATE_CATEGORY = 1;
 
     @BindView(R.id.book_recommend_banner)
     Banner mBanner;
@@ -48,8 +53,51 @@ public class BookRecommendFragment extends Fragment {
     //是否第一次加载
     private boolean mIsFirstLoad = true;
 
+    private List<Book> mBookList;
+
+    private BookAdapter bookAdapter;
+
+    private  List<String> urls;
+
     private Unbinder mBinder;
 
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler(){
+      public void handleMessage(Message msg){
+          switch (msg.what){
+              case UPDATE_CATEGORY:
+                  Util.downloadCategoryFromServer();
+                  queryBookFromDatabase();
+                  break;
+              case UPDATE_BOOK:
+                  Util.downloadBookFromServer(String.valueOf(msg.arg1));
+                  mBookList.clear();
+                  mBookList.addAll(DataSupport.findAll(Book.class));
+                  bookAdapter.notifyDataSetChanged();
+
+                  //轮播图属性设置
+                  urls.clear();
+                  for (Book book : mBookList) {
+                      if (urls.size() < 5 && book != null){
+                          urls.add(book.getImageurl());
+                      }else {
+                          break;
+                      }
+                  }
+                  mBanner.setImages(urls)
+                          .setBannerStyle(BannerConfig.NUM_INDICATOR)
+                          .setDelayTime(1500)
+                          .setImageLoader(new GlideImageLoader())
+                          .isAutoPlay(true)
+                          .setIndicatorGravity(BannerConfig.RIGHT)
+                          .setBannerAnimation(Transformer.Default)
+                          .start();
+                  break;
+              default:
+                  break;
+          }
+      }
+    };
     public BookRecommendFragment() {
         // Required empty public constructor
     }
@@ -109,7 +157,7 @@ public class BookRecommendFragment extends Fragment {
         }
 
         //mBookList应为管理员设置推荐书籍
-        List<Book> mBookList = new ArrayList<>();
+        mBookList = new ArrayList<>();
         String[] recommend_bookId = mManagement.getBookRecommendId().split(" ");
         if (recommendIsAvailable(recommend_bookId)){
             for (String s : recommend_bookId) {
@@ -123,7 +171,7 @@ public class BookRecommendFragment extends Fragment {
         }
 
         //urls轮播图应为管理员设置推荐书籍,应为url地址或者图片id
-        List<String> urls = new ArrayList<>();
+        urls = new ArrayList<>();
         String[] banner_bookId = mManagement.getBannerManagement().split(" ");
         if (bannerIsAvailable(banner_bookId)){
             for (String s : banner_bookId) {
@@ -158,7 +206,7 @@ public class BookRecommendFragment extends Fragment {
 
 
             GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-            BookAdapter bookAdapter = new BookAdapter(mBookList);
+            bookAdapter = new BookAdapter(mBookList);
             mRecyclerView.setLayoutManager(layoutManager);
             mRecyclerView.setAdapter(bookAdapter);
         } else {
@@ -168,12 +216,25 @@ public class BookRecommendFragment extends Fragment {
                 for (int i = 0; i < mCategorys.size(); i++) {
                     BookCategory mCategory = mCategorys.get(i);
                     String id = String.valueOf(mCategory.getCategoryId());
-                    Util.downloadBookFromServer(id);
+                    //更新书籍并且更新UI
+                    new Thread(() -> {
+                        Message message = new Message();
+                        message.what = UPDATE_BOOK;
+                        message.arg1 = Integer.parseInt(id);
+                        mHandler.sendMessage(message);
+                    }).start();
                 }
             }else {
-                Util.downloadCategoryFromServer();
+                //更新书籍种类并且更新UI
+                new Thread(() -> {
+                    Message message = new Message();
+                    message.what = UPDATE_CATEGORY;
+                    mHandler.sendMessage(message);
+                }).start();
             }
         }
+
+        Log.i(TAG, "queryBookFromDatabase: 查询结束!");
     }
 
     //

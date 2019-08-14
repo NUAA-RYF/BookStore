@@ -2,32 +2,37 @@ package com.thundersoft.bookstore.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.adapter.MessageAdapter;
 import com.thundersoft.bookstore.model.Message;
-
 import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MessageActivity extends AppCompatActivity {
 
+    private static final String TAG = "MessageActivity";
+
     @BindView(R.id.message_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.message_recyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.message_swipe)
+    SwipeRefreshLayout mSwipe;
+
+    private List<Message> messageList;
+
+    private MessageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +41,17 @@ public class MessageActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initData();
         initControls();
-
     }
 
-    private void initData(){
-        List<Message> messageList = DataSupport.findAll(Message.class);
+    private void initData() {
+        messageList = DataSupport.findAll(Message.class);
 
         //消息适配器
-        MessageAdapter adapter = new MessageAdapter(messageList);
+        adapter = new MessageAdapter(messageList);
         mRecyclerView.setAdapter(adapter);
     }
 
-    private void initControls(){
+    private void initControls() {
 
         //标题栏
         setSupportActionBar(mToolbar);
@@ -56,11 +60,33 @@ public class MessageActivity extends AppCompatActivity {
             bar.setDisplayHomeAsUpEnabled(true);
             bar.setTitle("消息管理");
         }
+
+        //下拉刷新
+        mSwipe.setOnRefreshListener(this::refreshData);
+    }
+
+    private void refreshData(){
+        new Thread(() -> runOnUiThread(() -> {
+            if (messageList != null){
+                messageList.clear();
+                messageList.addAll(DataSupport.findAll(Message.class));
+            }else {
+                messageList = DataSupport.findAll(Message.class);
+            }
+            Log.i(TAG, "refreshData: message list is "+ messageList.size());
+            if (adapter == null){
+                adapter = new MessageAdapter(messageList);
+                mRecyclerView.setAdapter(adapter);
+            }else {
+                adapter.notifyDataSetChanged();
+            }
+            mSwipe.setRefreshing(false);
+        })).start();
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NotNull MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
@@ -76,7 +102,7 @@ public class MessageActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_message,menu);
+        getMenuInflater().inflate(R.menu.menu_add_message, menu);
         return true;
     }
 }

@@ -54,7 +54,7 @@
     <string name="add_message">添加消息</string>
 
     <!--添加消息页面-->
-    <string name="add_message_addBtn">添加</string>
+    <string name="add_message_addBtn">提交</string>
     <string name="add_message_title">请输入消息标题</string>
     <string name="add_message_content">请输入消息内容</string>
 </resources>

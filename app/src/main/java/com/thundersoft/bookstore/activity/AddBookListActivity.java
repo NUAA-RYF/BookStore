@@ -75,8 +75,8 @@ public class AddBookListActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if (view.getId() == R.id.add_bookList_addBtn) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            String name = String.valueOf(mName.getText());
-            String stringId = String.valueOf(mId.getText());
+            String name = mName.getText().toString();
+            String stringId = mId.getText().toString();
             boolean flag = true;
             int id = 0;
             //判断名称和ID不能为空
