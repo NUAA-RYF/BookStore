@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initData();
         initPagerAdapter();
-
         tabLayout.setViewPager(viewPager);
     }
 
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         titles.add("首页");
         titles.add("书籍");
         titles.add("我");
-        viewPager.setOffscreenPageLimit(1);
+        viewPager.setOffscreenPageLimit(0);
 
     }
 

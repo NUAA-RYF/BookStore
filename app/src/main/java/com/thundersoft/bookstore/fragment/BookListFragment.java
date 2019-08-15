@@ -1,11 +1,7 @@
 package com.thundersoft.bookstore.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +17,6 @@ import com.thundersoft.bookstore.adapter.BookListAdapter;
 import com.thundersoft.bookstore.model.Book;
 import com.thundersoft.bookstore.model.BookCategory;
 import com.thundersoft.bookstore.util.Util;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 
 import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
