@@ -41,11 +41,7 @@ import butterknife.Unbinder;
 
 public class BookRecommendFragment extends Fragment {
 
-    private static final String TAG = "BookRecommendFragment";
-
     private static final String FRAGMENT_TITLE = "title";
-    private static final int UPDATE_BOOK = 2;
-    private static final int UPDATE_CATEGORY = 1;
 
     @BindView(R.id.book_recommend_banner)
     Banner mBanner;
@@ -67,47 +63,7 @@ public class BookRecommendFragment extends Fragment {
 
     private BookAdapter bookAdapter;
 
-    private List<String> urls;
-
     private Unbinder mBinder;
-
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case UPDATE_CATEGORY:
-                    Util.downloadCategoryFromServer();
-                    queryBookFromDatabase();
-                    break;
-                case UPDATE_BOOK:
-                    Util.downloadBookFromServer(String.valueOf(msg.arg1));
-                    mBookList.clear();
-                    mBookList.addAll(DataSupport.findAll(Book.class));
-                    bookAdapter.notifyDataSetChanged();
-
-                    //轮播图属性设置
-                    urls.clear();
-                    for (Book book : mBookList) {
-                        if (urls.size() < 5 && book != null) {
-                            urls.add(book.getImageurl());
-                        } else {
-                            break;
-                        }
-                    }
-                    mBanner.setImages(urls)
-                            .setBannerStyle(BannerConfig.NUM_INDICATOR)
-                            .setDelayTime(1500)
-                            .setImageLoader(new GlideImageLoader())
-                            .isAutoPlay(true)
-                            .setIndicatorGravity(BannerConfig.RIGHT)
-                            .setBannerAnimation(Transformer.Default)
-                            .start();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     public BookRecommendFragment() {
         // Required empty public constructor
@@ -145,15 +101,16 @@ public class BookRecommendFragment extends Fragment {
 
     //从数据库中查询
     private void queryBookFromDatabase() {
-        Management mManagement = DataSupport.find(Management.class, 1);
 
-        if (mManagement == null) {
+
+        if (DataSupport.findAll(Management.class).size() <= 0) {
             Management management = new Management();
             management.setBannerManagement("0 0 0 0 0");
             management.setBookRecommendId("0 0 0 0 0 0 0 0 0 0");
             management.save();
-            mManagement = DataSupport.find(Management.class, 1);
         }
+
+        Management mManagement = DataSupport.findFirst(Management.class);
         if (mManagement.getBannerManagement() == null) {
             mManagement.setBannerManagement("0 0 0 0 0");
             mManagement.update(mManagement.getId());
@@ -180,7 +137,8 @@ public class BookRecommendFragment extends Fragment {
         }
 
         //urls轮播图应为管理员设置推荐书籍,应为url地址或者图片id
-        urls = new ArrayList<>();
+        List<String> urls = new ArrayList<>();
+        boolean flag = false;
         String[] banner_bookId = mManagement.getBannerManagement().split(" ");
         if (bannerIsAvailable(banner_bookId)) {
             for (String s : banner_bookId) {
@@ -188,23 +146,27 @@ public class BookRecommendFragment extends Fragment {
                     int tempId = Integer.parseInt(s);
                     Book book = DataSupport.find(Book.class, tempId);
                     urls.add(book.getImageurl());
+                    flag = true;
                 }
             }
         } else {
             for (int i = 0; i < mBookList.size(); i++) {
                 urls.add(mBookList.get(i).getImageurl());
+                flag = true;
             }
         }
 
         //轮播图属性设置
-        mBanner.setImages(urls)
-                .setBannerStyle(BannerConfig.NUM_INDICATOR)
-                .setDelayTime(1500)
-                .setImageLoader(new GlideImageLoader())
-                .isAutoPlay(true)
-                .setIndicatorGravity(BannerConfig.RIGHT)
-                .setBannerAnimation(Transformer.Default)
-                .start();
+        if (flag){
+            mBanner.setImages(urls)
+                    .setBannerStyle(BannerConfig.NUM_INDICATOR)
+                    .setDelayTime(1500)
+                    .setImageLoader(new GlideImageLoader())
+                    .isAutoPlay(true)
+                    .setIndicatorGravity(BannerConfig.RIGHT)
+                    .setBannerAnimation(Transformer.Default)
+                    .start();
+        }
 
         if (mBookList.size() > 0) {
             //显示视图
@@ -225,20 +187,33 @@ public class BookRecommendFragment extends Fragment {
                     BookCategory mCategory = mCategorys.get(i);
                     String id = String.valueOf(mCategory.getCategoryId());
                     //更新书籍并且更新UI
-                    new Thread(() -> {
-                        Message message = new Message();
-                        message.what = UPDATE_BOOK;
-                        message.arg1 = Integer.parseInt(id);
-                        mHandler.sendMessage(message);
-                    }).start();
+                    Util.downloadBookFromServer(id);
+                    mBookList.clear();
+                    mBookList.addAll(DataSupport.findAll(Book.class));
+                    bookAdapter.notifyDataSetChanged();
                 }
+
+                //轮播图属性设置
+                urls.clear();
+                for (Book book : mBookList) {
+                    if (urls.size() < 5 && book != null) {
+                        urls.add(book.getImageurl());
+                    } else {
+                        break;
+                    }
+                }
+                mBanner.setImages(urls)
+                        .setBannerStyle(BannerConfig.NUM_INDICATOR)
+                        .setDelayTime(1500)
+                        .setImageLoader(new GlideImageLoader())
+                        .isAutoPlay(true)
+                        .setIndicatorGravity(BannerConfig.RIGHT)
+                        .setBannerAnimation(Transformer.Default)
+                        .start();
             } else {
                 //更新书籍种类并且更新UI
-                new Thread(() -> {
-                    Message message = new Message();
-                    message.what = UPDATE_CATEGORY;
-                    mHandler.sendMessage(message);
-                }).start();
+                Util.downloadCategoryFromServer();
+                queryBookFromDatabase();
             }
         }
     }

@@ -1,7 +1,10 @@
 package com.thundersoft.bookstore.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,8 @@ import com.thundersoft.bookstore.adapter.BookListAdapter;
 import com.thundersoft.bookstore.model.Book;
 import com.thundersoft.bookstore.model.BookCategory;
 import com.thundersoft.bookstore.util.Util;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 
 import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.DataSupport;
@@ -38,9 +43,8 @@ import butterknife.Unbinder;
  * create an instance of this fragment.
  */
 public class BookListFragment extends Fragment {
-    private static final String TAG = "BookListFragment";
-    private static final String FRAGMENT_TITLE = "title";
 
+    private static final String FRAGMENT_TITLE = "title";
     @BindView(R.id.bookCategory_list_listView)
     ListView mCategory;
     @BindView(R.id.book_list_listView)
@@ -56,6 +60,15 @@ public class BookListFragment extends Fragment {
     private boolean mIsVisible = false;
 
     private boolean mIsFirstLoad = true;
+
+    private BookCategoryAdapter adapter;
+
+    private BookListAdapter bookListAdapter;
+
+    private List<Book> mBookLists;
+
+    private List<BookCategory> mCategorys;
+
 
     public BookListFragment() {
         // Required empty public constructor
@@ -81,12 +94,10 @@ public class BookListFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView: ");
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_booklist, container, false);
         }
         mBinder = ButterKnife.bind(this,rootView);
-
         mIsPrepare = true;
         lazyload();
         return rootView;
@@ -119,45 +130,48 @@ public class BookListFragment extends Fragment {
 
     private void loadData() {
         //从管理员处获取可获得的列表
-        final List<BookCategory> mCategorys = DataSupport.findAll(BookCategory.class);
+        mCategorys = DataSupport.findAll(BookCategory.class);
         //从管理员处获取可获得的书籍
         String categoryId = "242";
-        final List<Book> mBookLists = DataSupport.where("categoryId=" + categoryId).find(Book.class);
-        if (mCategorys.size() > 0) {
-            //列表种类不为零,正常显示
-            BookCategoryAdapter adapter = new BookCategoryAdapter(getContext(), android.R.layout.simple_list_item_1, mCategorys);
-            final BookListAdapter bookListAdapter = new BookListAdapter(getContext(), mBookLists);
-            mBook.setAdapter(bookListAdapter);
-            mCategory.setAdapter(adapter);
-            mCategory.setOnItemClickListener((adapterView, parent, position, id) -> {
-                BookCategory category = mCategorys.get(position);
-                String currentId = String.valueOf(category.getCategoryId());
-                mBookLists.clear();
-                List<Book> mCurrentLists = DataSupport.where("categoryId=" + currentId).find(Book.class);
-
-                if (mCurrentLists.size() > 0){
-                    //若当前列表种类中,书籍为零,则从网络获取
-                    mBookLists.addAll(mCurrentLists);
-                }else{
-                    //从网络获取书籍信息
-                    if (Integer.parseInt(currentId) >= 242 && Integer.parseInt(currentId) <= 258){
-                        Util.downloadBookFromServer(currentId);
-                    }
+        mBookLists = DataSupport.where("categoryId=" + categoryId).find(Book.class);
+        //列表种类不为零,正常显示
+        adapter = new BookCategoryAdapter(getContext(), android.R.layout.simple_list_item_1, mCategorys);
+        bookListAdapter = new BookListAdapter(getContext(), mBookLists);
+        mBook.setAdapter(bookListAdapter);
+        mCategory.setAdapter(adapter);
+        mCategory.setOnItemClickListener((adapterView, parent, position, id) -> {
+            BookCategory category = mCategorys.get(position);
+            String currentId = String.valueOf(category.getCategoryId());
+            mBookLists.clear();
+            List<Book> mCurrentLists = DataSupport.where("categoryId=" + currentId).find(Book.class);
+            if (mCurrentLists.size() > 0){
+                //若当前列表种类中,书籍为零,则从网络获取
+                mBookLists.addAll(mCurrentLists);
+            }else{
+                //从网络获取书籍信息
+                if (Integer.parseInt(currentId) >= 242 && Integer.parseInt(currentId) <= 258){
+                    Util.downloadBookFromServer(currentId);
+                    mBookLists.clear();
+                    mBookLists.addAll(DataSupport.findAll(Book.class));
+                    bookListAdapter.notifyDataSetChanged();
                 }
-                mCurrentLists.clear();
-                bookListAdapter.notifyDataSetChanged();
-            });
-
-            mBook.setOnItemClickListener((adapterView, parent, position, id) -> {
-                Intent intent = new Intent(getContext(), BookActivity.class);
-                Book book = mBookLists.get(position);
-                //传递book对象
-                intent.putExtra("book", new Gson().toJson(book));
-                Objects.requireNonNull(getContext()).startActivity(intent);
-            });
-        }else {
+            }
+            mCurrentLists.clear();
+            bookListAdapter.notifyDataSetChanged();
+        });
+        mBook.setOnItemClickListener((adapterView, parent, position, id) -> {
+            Intent intent = new Intent(getContext(), BookActivity.class);
+            Book book = mBookLists.get(position);
+            //传递book对象
+            intent.putExtra("book", new Gson().toJson(book));
+            Objects.requireNonNull(getContext()).startActivity(intent);
+        });
+        if (mCategorys.size() <= 0) {
             //列表种类为零,无法显示,从网络获取
             Util.downloadCategoryFromServer();
+            mCategorys.clear();
+            mCategorys.addAll(DataSupport.findAll(BookCategory.class));
+            adapter.notifyDataSetChanged();
         }
     }
 
