@@ -13,6 +13,7 @@
         android:drawableLeft="@mipmap/icon_search"
         android:background="@drawable/search_home"
         android:textColor="@color/colorBlack"
+        android:paddingLeft="13dp"
         android:hint="请输入搜索内容"
         android:maxLines="1"
         android:maxLength="20"
@@ -21,6 +22,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginStart="40dp" />
+        android:layout_marginStart="40dp"
+        android:drawableStart="@mipmap/icon_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

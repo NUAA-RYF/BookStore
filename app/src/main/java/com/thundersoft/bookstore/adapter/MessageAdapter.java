@@ -1,8 +1,8 @@
 package com.thundersoft.bookstore.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,12 @@ import com.google.android.material.snackbar.Snackbar;
 import com.thundersoft.bookstore.R;
 import com.thundersoft.bookstore.activity.AddMessageActivity;
 import com.thundersoft.bookstore.model.Message;
+
+import org.litepal.crud.DataSupport;
+
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,8 +33,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private Context mContext;
 
-    private View view;
-
     public MessageAdapter(List<Message> messages) {
         this.mMessages = messages;
     }
@@ -37,7 +40,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
         mContext = parent.getContext();
         return new ViewHolder(view);
     }
@@ -57,10 +60,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         holder.mDelete.setOnClickListener(mView -> {
             //删除
-            Snackbar.make(view,"是否删除"+message.getTitle()+"?",Snackbar.LENGTH_SHORT)
-                    .setAction("删除", newView -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage("是否删除"+message.getTitle()+"?")
+                    .setPositiveButton("删除",(dialogInterface, i) -> {
                         message.delete();
+                        mMessages.clear();
+                        mMessages.addAll(DataSupport.findAll(Message.class));
+                        notifyDataSetChanged();
                     }).show();
+
         });
     }
 

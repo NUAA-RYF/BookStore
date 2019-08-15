@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.AddMessageActivity"></activity>
+        <activity android:name=".activity.ShowMessageActivity"></activity>
+        <activity android:name=".activity.AddMessageActivity" />
         <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.AddBookActivity" />
         <activity android:name=".activity.AddBookListActivity" /> <!-- 书籍管理页面 -->

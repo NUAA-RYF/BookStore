@@ -39,6 +39,11 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initData();
         initControls();
     }
@@ -73,7 +78,6 @@ public class MessageActivity extends AppCompatActivity {
             }else {
                 messageList = DataSupport.findAll(Message.class);
             }
-            Log.i(TAG, "refreshData: message list is "+ messageList.size());
             if (adapter == null){
                 adapter = new MessageAdapter(messageList);
                 mRecyclerView.setAdapter(adapter);

@@ -57,5 +57,9 @@
     <string name="add_message_addBtn">提交</string>
     <string name="add_message_title">请输入消息标题</string>
     <string name="add_message_content">请输入消息内容</string>
+
+    <!--消息列表-->
+    <string name="message_item_title">暂无系统消息</string>
+    <string name="message_item_content">暂无消息内容,请等待添加!</string>
 </resources>
 
