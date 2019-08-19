@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mPassword.setText(password);
             mRemember.setChecked(true);
         }
-
     }
 
     private void initClickListener() {
@@ -159,6 +158,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             this.startActivity(mIntent);
             Toast.makeText(this, manager.getManagerName()+",欢迎登录!", Toast.LENGTH_SHORT).show();
+            this.finish();
         }
     }
 

@@ -130,7 +130,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             builder.setMessage(REGISTER_SUCCESS)
                     .setTitle("注册成功:")
                     .setCancelable(true)
-                    .setPositiveButton("确认", (dialogInterface, i) -> dialogInterface.dismiss())
+                    .setPositiveButton("确认", (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                        this.finish();
+                    })
                     .show();
         } else {
             //用户已经存在,无法注册
@@ -157,8 +160,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             //密码相同,正确
             return true;
         } else {
-            Log.i(TAG, "passwordIsCorrect: " + password);
-            Log.i(TAG, "passwordIsCorrect: " + passwordRepeat);
             builder.setMessage(PASSWORD_REPEAT_ERROR)
                     .setTitle("错误:")
                     .setCancelable(true)

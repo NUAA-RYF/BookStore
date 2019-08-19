@@ -71,7 +71,7 @@ public class BannerBookAdapter extends RecyclerView.Adapter<BannerBookAdapter.Vi
             //是否为选中状态
             if (book.getIsBanner() == 1){
                 //书籍原本在轮播图中,现在要移除,书籍选中设置为否,管理列表移除书籍
-                book.setToDefault("isBanner");
+                book.setIsBanner(-1);
                 book.update(book.getId());
                 holder.mBookIsSelected.setChecked(false);
 

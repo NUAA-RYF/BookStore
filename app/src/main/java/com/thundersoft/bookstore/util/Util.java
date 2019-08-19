@@ -1,5 +1,8 @@
 package com.thundersoft.bookstore.util;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -23,19 +26,12 @@ public class Util {
 
     private static final String TAG = "Util";
 
-    private static final String KEY = "006e8b17f75158a969f56e37f4979d41";
-
-    private static final String PN = "0";//起始位置
-
-    private static final String RN = "20";//数据最大返回条数
-
-
     /*
      * response 返回的JSON格式的数组
      * 处理Book类型JSON数组
      * 存入LitePal数据库
      * */
-    private static void handleBookResponse(String response, String categoryId) {
+    public static boolean handleBookResponse(String response, String categoryId) {
 
         if (!TextUtils.isEmpty(response)) {
             try {
@@ -61,13 +57,19 @@ public class Util {
                                 sub1, sub2, imageUrl, reading, online,
                                 byTime, categoryId, 1, 0);
                         book.save();
-                        Log.i(TAG, "handleResponse: 书籍数据存储成功!");
                     }
+                    Log.i(TAG, "handleResponse: 书籍数据存储成功!");
+                    return true;
+                }else {
+                    Log.i(TAG, "handleBookResponse: 书籍加载失败!");
+                    return false;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                return false;
             }
         }
+        return false;
     }
 
     /*
@@ -75,7 +77,7 @@ public class Util {
      * 处理BookCategory类型JSON数组
      * 存入LitePal数据库
      * */
-    private static void handleCategoryResponse(String response) {
+    public static boolean handleCategoryResponse(String response) {
         if (!TextUtils.isEmpty(response)) {
             try {
                 JSONObject jsonObject = new JSONObject(response);
@@ -91,50 +93,28 @@ public class Util {
                         Log.i(TAG, "handleCategoryResponse: id " + id);
                         Log.i(TAG, "handleCategoryResponse: category " + catalog);
                     }
+
+                    return true;
                 } else {
                     Log.i(TAG, "handleBookResponse: 数据库存储失败！ resultCode " + resultCode);
+                    return false;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                return false;
             }
         }
+        return false;
     }
 
-
-    public static void downloadCategoryFromServer() {
-        String address = "http://apis.juhe.cn/goodbook/catalog?key=" + KEY +
-                "&dtype=json";
-        HttpUtil.sendOkhttpRequest(address, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+    public static boolean isNetWorkAvailable(Context context){
+        if(context != null){
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = Objects.requireNonNull(manager).getActiveNetworkInfo();
+            if (networkInfo != null){
+                return networkInfo.isAvailable();
             }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseText = Objects.requireNonNull(response.body()).string();
-                handleCategoryResponse(responseText);
-            }
-        });
+        }
+        return false;
     }
-
-    public static void downloadBookFromServer(String catalogId) {
-        String address = "http://apis.juhe.cn/goodbook/query?key=" + KEY +
-                "&catalog_id=" + catalogId +
-                "&pn=" + PN +
-                "&rn=" + RN;
-        HttpUtil.sendOkhttpRequest(address, new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.i(TAG, "onFailure: HttpOnFailed!");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String responseText = Objects.requireNonNull(response.body()).string();
-                handleBookResponse(responseText,catalogId);
-            }
-        });
-    }
-
 }

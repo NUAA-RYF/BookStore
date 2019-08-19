@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
 
         Log.i(TAG, "initData: 进入初始化数据");
+        viewPager.setOffscreenPageLimit(0);
         fragments = new ArrayList<>();
         titles = new ArrayList<>();
         fragments.add(BookRecommendFragment.newInstance("BookRecommend"));
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         titles.add("首页");
         titles.add("书籍");
         titles.add("我");
-        viewPager.setOffscreenPageLimit(0);
 
     }
 
