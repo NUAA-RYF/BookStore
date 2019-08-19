@@ -64,8 +64,6 @@ public class BookManagementActivity extends AppCompatActivity {
             }
             mBannerBookAdapter.notifyDataSetChanged();
         });
-
-
     }
 
     @Override
